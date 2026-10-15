@@ -66,7 +66,7 @@ const taskList=[
 ];
 const dayNames=['Esmaspäev','Teisipäev','Kolmapäev','Neljapäev','Reede'];
 const shortDays=['E','T','K','N','R'];
-const key='minutiteKoguja_v1';
+const key='elli_minutiteKoguja_v1';
 let state;
 function blank(){return {checks:{},satUsed:0,sunUsed:0,weekStart:weekStartISO()}}
 function weekStartISO(){let d=new Date();d.setHours(12,0,0,0);let day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return d.toISOString().slice(0,10)}
