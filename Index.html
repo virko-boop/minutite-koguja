@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Minutite Koguja">
-<title>Minutite Koguja 🎮</title>
+<title>Matheo Minutite Koguja 🎮</title>
 <style>
 :root{--purple:#6558e8;--ink:#272449;--muted:#777594;--bg:#f6f5ff;--green:#21885d;--yellow:#ffe18a;--pink:#ffdfec}
 *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#e9e7ff 0,#f8f7ff 250px,var(--bg) 100%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
@@ -33,13 +33,13 @@ button{cursor:pointer;-webkit-tap-highlight-color:transparent}button:focus-visib
 <body>
 <main>
   <section class="hero">
-    <div class="hero-top"><div class="mascot">🦊</div><div><h1>Minutite Koguja</h1><p>Tee head asjad ära ja kogu mänguminuteid!</p></div></div>
+    <div class="hero-top"><div class="mascot">🦊</div><div><h1>Matheo Minutite Koguja</h1><p>Tee head asjad ära ja kogu mänguminuteid!</p></div></div>
     <div class="balance"><div><div class="small-label">SINU KOGUTUD AEG</div><div class="big"><span id="balance">0</span> <span style="font-size:19px">min</span></div></div><div class="pill"><span class="small-label">SEL NÄDALAL</span><strong id="earned">0 min</strong></div></div>
   </section>
   <div class="tabs"><button class="tab active" id="weekdayTab">⭐ Kogun</button><button class="tab" id="weekendTab">🎮 Mänguaeg</button></div>
   <section id="weekdayView">
     <div class="card"><h2>Milline päev täna on?</h2><p class="sub">Vali päev ja märgi tehtud asjad ära.</p><div class="daystrip" id="days"></div>
-      <div class="rewardline"><div><span id="dayTitle">Esmaspäev</span><br><strong id="dayTotal">0 min</strong></div><span id="dayHint">Veel saab teenida 40 min</span></div>
+      <div class="rewardline"><div><span id="dayTitle">Esmaspäev</span><br><strong id="dayTotal">0 min</strong></div><span id="dayHint">Veel saab teenida 45 min</span></div>
       <div class="progress"><span id="dayProgress" style="width:0%"></span></div>
       <div id="tasks"></div>
     </div>
@@ -61,7 +61,8 @@ const taskList=[
  {id:'home',name:'🏡 Olin õigeks ajaks kodus',points:10},
  {id:'clothes',name:'👕 Panin riided ära',points:5},
  {id:'toys',name:'🧸 Koristasin mänguasjad',points:5},
- {id:'teeth',name:'🪥 Pesin hambad',points:5}
+ {id:'teeth',name:'🪥 Pesin hambad',points:5},
+ {id:'sister',name:'💑 Ei kiusanud õde',points:5}
 ];
 const dayNames=['Esmaspäev','Teisipäev','Kolmapäev','Neljapäev','Reede'];
 const shortDays=['E','T','K','N','R'];
@@ -78,7 +79,7 @@ state=load();
 const $=id=>document.getElementById(id);
 function renderDays(){ $('days').innerHTML=dayNames.map((d,i)=>`<button class="day ${i===selectedDay?'selected':''}" data-day="${i}">${shortDays[i]}<small>${dayEarned(i)} min</small></button>`).join('');document.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{selectedDay=+b.dataset.day;render()})}
 function renderTasks(){let a=state.checks[selectedDay]||[];$('tasks').innerHTML=taskList.map(t=>`<div class="task ${a.includes(t.id)?'done':''}"><input type="checkbox" id="t_${t.id}" data-task="${t.id}" ${a.includes(t.id)?'checked':''}><label for="t_${t.id}">${t.name}</label><span class="points">+${t.points} min</span></div>`).join('');document.querySelectorAll('[data-task]').forEach(c=>c.onchange=()=>{let a=state.checks[selectedDay]||[];state.checks[selectedDay]=c.checked?[...a,c.dataset.task]:a.filter(x=>x!==c.dataset.task);save();render()})}
-function render(){let total=earned(),today=dayEarned(selectedDay),max=40;$('balance').textContent=total;$('earned').textContent=total+' min';$('weekTotal').textContent=total+' min';$('dayTitle').textContent=dayNames[selectedDay];$('dayTotal').textContent=today+' min';$('dayHint').textContent=today===max?'Kõik ülesanded tehtud! 🎉':'Veel saab teenida '+(max-today)+' min';$('dayProgress').style.width=(today/max*100)+'%';$('weekProgress').style.width=(Math.min(100,total/200*100))+'%';$('weekHint').textContent=total>=180?'Väga tubli! Sul on juba palju mänguaega kogutud! 🏆':`200 minuti eesmärgini on jäänud ${Math.max(0,200-total)} minutit.`;renderDays();renderTasks();
+function render(){let total=earned(),today=dayEarned(selectedDay),max=45;$('balance').textContent=total;$('earned').textContent=total+' min';$('weekTotal').textContent=total+' min';$('dayTitle').textContent=dayNames[selectedDay];$('dayTotal').textContent=today+' min';$('dayHint').textContent=today===max?'Kõik ülesanded tehtud! 🎉':'Veel saab teenida '+(max-today)+' min';$('dayProgress').style.width=(today/max*100)+'%';$('weekProgress').style.width=(Math.min(100,total/200*100))+'%';$('weekHint').textContent=total>=180?'Väga tubli! Sul on juba palju mänguaega kogutud! 🏆':`200 minuti eesmärgini on jäänud ${Math.max(0,200-total)} minutit.`;renderDays();renderTasks();
 let satLeft=Math.max(0,Math.min(90,total-state.sunUsed)-state.satUsed),sunLeft=Math.max(0,Math.min(90,total-state.satUsed)-state.sunUsed);
 $('satLeft').textContent=satLeft;$('sunLeft').textContent=sunLeft;$('satUsed').textContent=state.satUsed;$('sunUsed').textContent=state.sunUsed;
 $('satMinus').disabled=state.satUsed<=0;$('sunMinus').disabled=state.sunUsed<=0;
